@@ -22,16 +22,14 @@ Napisać program do obsługi historii połączeń. Program musi umożliwiać:
 
 using namespace std;
 
-string login_admin = "admin";
-string haslo_admin = "admin";
 
 
 int main()
 {
-	MYSQL *polaczenie;
-	polaczenie = mysql_init(0);
-	polaczenie = mysql_real_connect(polaczenie, "127.0.0.1", "root", "", "telefonia", 3306, NULL, 0);
-	if (polaczenie)
+	MYSQL *conn;
+	conn = mysql_init(0);
+	conn = mysql_real_connect(conn, "127.0.0.1", "root", "", "telefonia", 3306, NULL, 0);
+	if (conn)
 	{
 		cout << "Udalo sie nawiazac polaczenie" << endl;
 
@@ -42,19 +40,19 @@ int main()
 	}
 
 	Telefonia t;
-	string login;
-	string haslo;
-	while (1)
-	{
-		cout << "Witaj w programie telefoni. Prosze sie zalogowac" << endl;
-		cout << "login: " << endl;
-		cin >> login;
-		cout << "haslo: " << endl;
-		cin >> haslo;
-		if (login == login_admin && haslo == haslo_admin)
-		{
-			while (1)
+
+
+
+
+
+
+
+
+
+
+		while (1)
 			{
+				cout << "Witaj w programie telefoni. Prosze sie zalogowac" << endl;
 				cout << "Zalogowano jako admin" << endl;
 				cout << "Co chcesz zrobic?" << endl;
 				cout << "1. Wyswietlic wszystkich uzytkownikow i ich dane" << endl;
@@ -69,20 +67,29 @@ int main()
 				{
 				case 1:
 				{
-					t.dodaj_uzytkownika(polaczenie);
+					t.wyswietl_uzytkownikow(conn);
+					break;
 				}
 				case 2:
 				{
-					t.usun_uzytkownika(polaczenie);
+					t.dodaj_uzytkownika(conn);
+					break;
+				}
+				case 3:
+				{
+
+				}
+				case 4:
+				{
+					t.usun_uzytkownika(conn);
+					break;
+
 				}
 				default:
 					return 0;
 					break;
 				}
 			}
-		}
-		cout << "ZLE DANE" << endl;
-	}
 
 }
 
