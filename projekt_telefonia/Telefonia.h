@@ -13,12 +13,18 @@ using namespace std;
 class Telefonia
 {
 public:
-	int dodaj_uzytkownika(MYSQL *polaczenie);
-	void usun_uzytkownika(MYSQL *polaczenie);
-	int edytuj_uzytkownika(MYSQL *polaczenie);
-	void przeprowadz_polaczenie(MYSQL *polaczenie);
-	void wyswietl_uzytkownikow(MYSQL *polaczenie);
+	//tylko admin
+	int dodaj_uzytkownika(MYSQL *polaczenie);//zrobione
+	int usun_uzytkownika(MYSQL *polaczenie);//zrobione
+	int edytuj_uzytkownika(MYSQL *polaczenie);//zrobione
+	void wyswietl_uzytkownikow(MYSQL *polaczenie);//zrobione
+	void wyswietl_wszystkie_historie(MYSQL *polaczenie);
+	int modyfikuj_historie(MYSQL *polaczenie);
+	//tylko uzytkownik
+	void wyswietl_dane(MYSQL *polaczenie,char id);
 	void wyswietl_historie(MYSQL *polaczenie);
-	void modyfikuj_historie(MYSQL *polaczenie);
+	//wszyscy
+	int przeprowadz_polaczenie(MYSQL *polaczenie);
+
 
 };
