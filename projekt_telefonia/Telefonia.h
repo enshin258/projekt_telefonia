@@ -6,7 +6,10 @@
 #include <mysql.h>
 #include <iomanip>
 #include <regex>
-
+#include <ctime>
+#include <Windows.h>
+#include <conio.h>
+#include <time.h>
 
 using namespace std;
 
@@ -21,10 +24,10 @@ public:
 	void wyswietl_wszystkie_historie(MYSQL *polaczenie);
 	int modyfikuj_historie(MYSQL *polaczenie);
 	//tylko uzytkownik
-	void wyswietl_dane(MYSQL *polaczenie,char id);
+	void wyswietl_dane(MYSQL *polaczenie,char id);//zrobione
 	void wyswietl_historie(MYSQL *polaczenie);
 	//wszyscy
-	int przeprowadz_polaczenie(MYSQL *polaczenie);
+	int przeprowadz_polaczenie(MYSQL *polaczenie,string numer_nadawcy);//zrobione
 
 
 };

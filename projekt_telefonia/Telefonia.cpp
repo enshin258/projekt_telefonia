@@ -1,6 +1,9 @@
+
 #pragma once
 #include "pch.h"
 #include "Telefonia.h"
+
+
 
 int Telefonia::dodaj_uzytkownika(MYSQL *polaczenie)
 {
@@ -352,3 +355,73 @@ void Telefonia::wyswietl_dane(MYSQL *polaczenie,char id)
 }
 
 
+int Telefonia::przeprowadz_polaczenie(MYSQL *polaczenie, string numer_nadawcy)
+{
+	bool same_cyfry_numer_odbiorcy;
+	string numer_odbiorcy;
+
+	cout << "Podaj na jaki numer zadzwonic (moze byc z innej telefonni)" << endl;
+	cin >> numer_odbiorcy;
+	same_cyfry_numer_odbiorcy = regex_match(numer_odbiorcy, regex("^[0-9]+$"));
+	if (same_cyfry_numer_odbiorcy == false || numer_odbiorcy.length() != 9)
+	{
+		cout << "Blad wprowadzania danych" << endl;
+		return -1;
+	}
+
+	cout << "Rozpoczynam rozmowe telefoniczna..." << endl;
+	system("cls");
+	time_t start, koniec, aktualna_data;
+	struct tm * aktualna_data_sformatowana;
+	double czas_rozmowy;
+
+	time(&aktualna_data);
+	aktualna_data_sformatowana=localtime(&aktualna_data);
+
+	time(&start);
+	while(1)
+	{
+		if (getchar() == 'x')
+		{
+			break;
+		}
+		cout << "rozmowa trwa,nacisnij 'x' i enter aby zakonczyc..." << endl;
+
+	}
+	time(&koniec);
+	czas_rozmowy = difftime(koniec, start);
+	cout << "Rozmowa trwala: " << czas_rozmowy << "sekund" <<endl;
+
+	//wprowadzenie do tabeli z historia tej rozmowy
+
+	int poprawnosc = 0;
+	stringstream ss;
+	ss << "INSERT INTO historia (nadawca,odbiorca,data,czas) VALUES (" << numer_nadawcy << "," << numer_odbiorcy << ",'" <<asctime(aktualna_data_sformatowana)  << "'," << czas_rozmowy << ")";
+
+	//w celu weryfikacji czy zapytanie sql jest poprawne
+	string test = ss.str();
+	cout << test << endl << endl;
+
+	string zapytanie = ss.str();
+	const char* q = zapytanie.c_str();
+	poprawnosc = mysql_query(polaczenie, q);
+
+	if (poprawnosc == 0)
+	{
+		cout << "Pomyœlnie dodano wpis do historii" << endl;
+		return 0;
+
+	}
+	else
+	{
+		cout << mysql_error(polaczenie) << endl;
+		cout << "Blad w wprowadzaniu wpisu historii" << endl;
+		return -1;
+
+	}
+
+
+
+
+
+}

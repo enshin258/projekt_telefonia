@@ -13,6 +13,8 @@ Napisać program do obsługi historii połączeń. Program musi umożliwiać:
 
 */
 
+
+
 #include "pch.h"
 #include <mysql.h>
 #include <iostream>
@@ -59,7 +61,7 @@ int main()
 		cin >> haslo;
 
 		stringstream ss;
-		ss << "SELECT id,admin FROM uzytkownicy WHERE login = " << "'" << login << "'" << "AND haslo =" << "'" << haslo << "'";
+		ss << "SELECT id,admin,numer FROM uzytkownicy WHERE login = " << "'" << login << "'" << "AND haslo =" << "'" << haslo << "'";
 		//weryfikacja sql
 		string test = ss.str();
 		cout << test << endl << endl << endl;
@@ -133,7 +135,7 @@ int main()
 						cout << "Zalogowano na konto zwyklego uzytkownika:" << endl;
 						int wybor;
 						cout << "Co chcesz zrobic" << endl;
-						cout << "1. Przejrzeć swoje dane osobowe" << endl;
+						cout << "1.Przejrzec swoje dane osobowe" << endl;
 						cout << "2.Wykonac polaczenie" << endl;
 						cout << "3.Wyswietlic swoja histoire polaczen" << endl;
 						cin >> wybor;
@@ -147,6 +149,8 @@ int main()
 						}
 						case 2:
 						{
+							string numer_nadawcy = row[2];
+							t.przeprowadz_polaczenie(polaczenie,numer_nadawcy);
 							break;
 						}
 						case 3:
@@ -154,10 +158,10 @@ int main()
 							break;
 						}
 						default:
+							return -1;
 							break;
 						}
 
-						return 0;
 					}
 				}
 				else
