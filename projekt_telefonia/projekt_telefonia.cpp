@@ -88,7 +88,8 @@ int main()
 						cout << "4. Usunać uzytkownika" << endl;
 						cout << "5. Wyswietlic historie wszystkich operacji" << endl;
 						cout << "6. Dodac sztucznie historie operacji" << endl;
-						cout << "7.Opcje statystyczne" << endl;
+						cout << "7.Wykonac polaczenie" << endl;
+						cout << "8. Opcje statystyczne" << endl;
 						int wybor;
 						cin >> wybor;
 						switch (wybor)
@@ -125,6 +126,12 @@ int main()
 							break;
 						}
 						case 7:
+						{
+							string numer_nadawcy = row[2];
+							t.przeprowadz_polaczenie(polaczenie, numer_nadawcy);
+							break;
+						}
+						case 8:
 						{
 							t.statystyka(polaczenie);
 							break;

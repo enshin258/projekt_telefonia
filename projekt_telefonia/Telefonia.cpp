@@ -645,7 +645,7 @@ void Telefonia::statystyka(MYSQL *polaczenie)
 	cout << "ID uzytkownikow z prawami admina to:  ";
 	for (int i = 0; i < id_adminow.size(); i++)
 	{
-		cout << id_adminow[i] << " ";
+		cout << id_adminow[i] << ", ";
 	}
 	cout << endl;
 
