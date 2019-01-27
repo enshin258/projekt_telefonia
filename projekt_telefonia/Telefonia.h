@@ -10,6 +10,7 @@
 #include <Windows.h>
 #include <conio.h>
 #include <time.h>
+#include <vector>
 
 using namespace std;
 
@@ -21,11 +22,12 @@ public:
 	int usun_uzytkownika(MYSQL *polaczenie);//zrobione
 	int edytuj_uzytkownika(MYSQL *polaczenie);//zrobione
 	void wyswietl_uzytkownikow(MYSQL *polaczenie);//zrobione
-	void wyswietl_wszystkie_historie(MYSQL *polaczenie);
-	int modyfikuj_historie(MYSQL *polaczenie);
+	void wyswietl_historie(MYSQL *polaczenie);//zrobione
+	int dodaj_wpis_do_historii(MYSQL *polaczenie);
+	void statystyka(MYSQL *polaczenie);
 	//tylko uzytkownik
 	void wyswietl_dane(MYSQL *polaczenie,char id);//zrobione
-	void wyswietl_historie(MYSQL *polaczenie);
+	void wyswietl_historie(MYSQL *polaczenie,string numer_uzytkownika);//zrobione
 	//wszyscy
 	int przeprowadz_polaczenie(MYSQL *polaczenie,string numer_nadawcy);//zrobione
 

@@ -102,7 +102,6 @@ int Telefonia::dodaj_uzytkownika(MYSQL *polaczenie)
 
 	}
 
-	return 0;
 }
 
 
@@ -319,6 +318,7 @@ int Telefonia::edytuj_uzytkownika(MYSQL *polaczenie)
 	return 0;
 }
 
+
 void Telefonia::wyswietl_dane(MYSQL *polaczenie,char id)
 {
 	MYSQL_ROW row;
@@ -421,6 +421,254 @@ int Telefonia::przeprowadz_polaczenie(MYSQL *polaczenie, string numer_nadawcy)
 	}
 
 
+
+
+
+}
+
+
+void Telefonia::wyswietl_historie(MYSQL *polaczenie)
+{
+	MYSQL_ROW row;
+	MYSQL_RES* res;
+
+	int poprawnosc = 0;
+
+
+	poprawnosc = mysql_query(polaczenie, "SELECT * FROM historia ");
+
+
+	if (poprawnosc == 0)
+	{
+		res = mysql_store_result(polaczenie);
+
+		cout << fixed << "id | nadawca | odbiorca | data | czas "<< endl;
+
+		while (row = mysql_fetch_row(res))
+		{
+			cout << row[0] << " | " << row[1] << " | " << row[2] << " | " << row[3] << " | " << row[4] << endl << endl;
+		}
+
+		cout << "Pomyslnie wyswietlono historie" << endl;
+	}
+	else
+	{
+		cout << mysql_error(polaczenie) << endl;
+		cout << "Blad w wyswietlaniu historiii" << endl;
+	}
+}
+
+
+void Telefonia::wyswietl_historie(MYSQL *polaczenie, string numer_uzytkownika)
+{
+
+	MYSQL_ROW row;
+	MYSQL_RES* res;
+
+	int poprawnosc = 0;
+
+
+	stringstream ss;
+	ss << "SELECT * FROM historia WHERE nadawca=" << numer_uzytkownika << " OR odbiorca=" << numer_uzytkownika;
+	//w celu weryfikacji czy zapytanie sql jest poprawne
+	string test = ss.str();
+	cout << test << endl << endl;
+
+	string zapytanie = ss.str();
+	const char* q = zapytanie.c_str();
+	poprawnosc = mysql_query(polaczenie, q);
+
+	if (poprawnosc == 0)
+	{
+		res = mysql_store_result(polaczenie);
+
+		cout << fixed << "id | nadawca | odbiorca | data | czas " << endl;
+
+		while (row = mysql_fetch_row(res))
+		{
+			cout << row[0] << " | " << row[1] << " | " << row[2] << " | " << row[3] << " | " << row[4] << endl << endl;
+		}
+
+		cout << "Pomyslnie wyswietlono historie" << endl;
+	}
+	else
+	{
+		cout << mysql_error(polaczenie) << endl;
+		cout << "Blad w wyswietlaniu historiii" << endl;
+	}
+}
+
+
+int Telefonia::dodaj_wpis_do_historii(MYSQL *polaczenie)
+{
+	string nadawca, odbiorca, data, czas;
+	bool same_cyfry_nadawca;
+	bool same_cyfry_odbiorca;
+	bool same_cyfry_czas;
+
+	cout << "Prosze podac dane do rekordu histori" << endl;
+	cout << "numer nadawcy: " << endl;
+	cin >> nadawca;
+	same_cyfry_nadawca = regex_match(nadawca, regex("^[0-9]+$"));
+	if (same_cyfry_nadawca == false || nadawca.length()!=9)
+	{
+		cout << "Blad wprowadzania danych" << endl;
+		return -1;
+	}
+	cout << "numer odbiorcy: " << endl;
+	cin >> odbiorca;
+	same_cyfry_odbiorca = regex_match(odbiorca, regex("^[0-9]+$"));
+	if (same_cyfry_odbiorca == false || odbiorca.length() != 9)
+	{
+		cout << "Blad wprowadzania danych" << endl;
+		return -1;
+	}
+
+	cout << "data rozpoczecia rozmowy: " << endl;
+	cin.ignore();
+
+
+	getline(std::cin, data);
+
+	cout << "czas rozmowy: " << endl;
+	cin >> czas;
+	same_cyfry_czas = regex_match(czas, regex("^[0-9]+$"));
+	if (same_cyfry_czas == false)
+	{
+		cout << "Blad wprowadzania danych" << endl;
+		return -1;
+	}
+
+
+	int poprawnosc = 0;
+	stringstream ss;
+	ss << "INSERT INTO historia (nadawca,odbiorca,data,czas) VALUES (" << nadawca << "," << odbiorca << ",'" << data << "'," << czas << ")";
+
+	//w celu weryfikacji czy zapytanie sql jest poprawne
+	string test = ss.str();
+	cout << test << endl << endl;
+
+	string zapytanie = ss.str();
+	const char* q = zapytanie.c_str();
+	poprawnosc = mysql_query(polaczenie, q);
+
+	if (poprawnosc == 0)
+	{
+		cout << "Pomyœlnie dodano wpis do histori" << endl;
+		return 0;
+
+	}
+	else
+	{
+		cout << mysql_error(polaczenie) << endl;
+		cout << "Blad w wprowadzaniu wpisu do historii" << endl;
+		return -1;
+
+	}
+}
+
+
+void Telefonia::statystyka(MYSQL *polaczenie)
+{
+	MYSQL_ROW row;
+	MYSQL_RES* res;
+
+	int poprawnosc = 0;
+
+	vector<string> id_adminow;
+
+	//zliczanie uzytkownikow
+	poprawnosc = mysql_query(polaczenie, "SELECT count(*) FROM uzytkownicy ");
+
+
+	if (poprawnosc == 0)
+	{
+		res = mysql_store_result(polaczenie);
+
+	
+
+		while (row = mysql_fetch_row(res))
+		{
+			cout << "liczba uzytkownikow wynosi: " << row[0] << endl;
+		}
+
+	}
+	else
+	{
+		cout << mysql_error(polaczenie) << endl;
+		cout << "Blad w wyswietlaniu uzytkownikow" << endl;
+	}
+	//obliczanie lacznego czasu rozmow
+	poprawnosc = mysql_query(polaczenie, "SELECT sum(czas) FROM historia ");
+
+
+	if (poprawnosc == 0)
+	{
+		res = mysql_store_result(polaczenie);
+
+
+
+		while (row = mysql_fetch_row(res))
+		{
+			cout << "laczny czas rozmow wynosi: : " << row[0] << endl;
+		}
+
+	}
+	else
+	{
+		cout << mysql_error(polaczenie) << endl;
+		cout << "Blad w wyswietlaniu sumy czasu" << endl;
+	}
+
+
+	//wyswietlanie id uzytkownikow z prawami admina
+	poprawnosc = mysql_query(polaczenie, "SELECT id FROM uzytkownicy WHERE admin = 1 ");
+
+	if (poprawnosc == 0)
+	{
+		res = mysql_store_result(polaczenie);
+
+
+
+		while (row = mysql_fetch_row(res))
+		{
+			id_adminow.push_back(row[0]);
+		}
+
+	}
+	else
+	{
+		cout << mysql_error(polaczenie) << endl;
+		cout << "Blad w sprawdzaniu id adminow" << endl;
+	}
+
+	cout << "ID uzytkownikow z prawami admina to:  ";
+	for (int i = 0; i < id_adminow.size(); i++)
+	{
+		cout << id_adminow[i] << " ";
+	}
+	cout << endl;
+
+	//wyswietlanie namocniejszego(najdluzszego hasla)
+	poprawnosc = mysql_query(polaczenie, "SELECT haslo FROM uzytkownicy ");
+
+
+	if (poprawnosc == 0)
+	{
+		res = mysql_store_result(polaczenie);
+		string najmocniejsze_haslo = "";
+		while (row = mysql_fetch_row(res))
+		{
+			najmocniejsze_haslo = [](string a, string b)->string {if (a.length() > b.length()) { return a; }return b; }(row[0], najmocniejsze_haslo);
+		}
+		cout << "Najmocniejsze haslo to:" << najmocniejsze_haslo << endl;
+	}
+
+	else
+	{
+		cout << mysql_error(polaczenie) << endl;
+		cout << "Blad w wyswietlaniu hasla" << endl;
+	}
 
 
 

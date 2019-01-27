@@ -1,16 +1,16 @@
 ﻿/*
 Napisać program do obsługi historii połączeń. Program musi umożliwiać:
 1. Zakładanie kont użytkowników przez Administratora-ok
-2. Wprowadzenie historii połączeń i ich parametrów przez Administratora
-3. Podgląd historii połączeń i ich parametrów dotyczących zalogowanego Użytkownika
-4. Wyliczanie przynajmniej dwóch różnych statystyk
+2. Wprowadzenie historii połączeń i ich parametrów przez Administratora-ok
+3. Podgląd historii połączeń i ich parametrów dotyczących zalogowanego Użytkownika-ok
+4. Wyliczanie przynajmniej dwóch różnych statystyk-ok w funkcji statystyka
 5. Zapis i odczyt stanu aplikacji baza danych-ok
-6. Użycie biblioteki STL
-7. Użycie przeciążania funkcji
-8. Użycie operacji lambda
-9. Wstawienie programu do repozytorium GIT i wykonanie przynajmniej dwóch commitów
+6. Użycie biblioteki STL-ok vector w funkcji statystyka do przechowywania id adminow
+7. Użycie przeciążania funkcji-ok w funkcji wyswietl_historie() jak 1 argument to admin a jak 2 to user
+8. Użycie operacji lambda-ok przy sprawdzaniu kto ma najdluzsze haslo
+9. Wstawienie programu do repozytorium GIT i wykonanie przynajmniej dwóch commitów-ok
 
-
+dodatkowe moje:walidacja danych wyrazeniami regularnymi,przeprowadzanie polaczenia,statystka 3 rzeczy,github
 */
 
 
@@ -87,7 +87,8 @@ int main()
 						cout << "3. Edytowac dane uzytkownika" << endl;
 						cout << "4. Usunać uzytkownika" << endl;
 						cout << "5. Wyswietlic historie wszystkich operacji" << endl;
-						cout << "6. Zmodyfikowac historie operacji" << endl;
+						cout << "6. Dodac sztucznie historie operacji" << endl;
+						cout << "7.Opcje statystyczne" << endl;
 						int wybor;
 						cin >> wybor;
 						switch (wybor)
@@ -115,10 +116,17 @@ int main()
 						}
 						case 5:
 						{
+							t.wyswietl_historie(polaczenie);
 							break;
 						}
 						case 6:
 						{
+							t.dodaj_wpis_do_historii(polaczenie);
+							break;
+						}
+						case 7:
+						{
+							t.statystyka(polaczenie);
 							break;
 						}
 						default:
@@ -155,6 +163,8 @@ int main()
 						}
 						case 3:
 						{
+							string numer_uzytkownika = row[2];
+							t.wyswietl_historie(polaczenie, numer_uzytkownika);
 							break;
 						}
 						default:
