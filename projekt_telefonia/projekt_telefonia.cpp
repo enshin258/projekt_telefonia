@@ -10,11 +10,11 @@ Napisać program do obsługi historii połączeń. Program musi umożliwiać:
 8. Użycie operacji lambda-ok przy sprawdzaniu kto ma najdluzsze haslo
 9. Wstawienie programu do repozytorium GIT i wykonanie przynajmniej dwóch commitów-ok
 
-dodatkowe moje:walidacja danych wyrazeniami regularnymi,przeprowadzanie polaczenia,statystka 3 rzeczy,github
+dodatkowe moje:walidacja danych wyrazeniami regularnymi,przeprowadzanie polaczenia,statystka 4 rzeczy,github
 */
 
 
-
+//zmiana
 #include "pch.h"
 #include <mysql.h>
 #include <iostream>
